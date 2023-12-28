@@ -3,12 +3,15 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
-		"dev": "ts-node src/main.tsx",
+		"start": "node dist/server/main.js",
+		"dev": "node scripts/run-dev.js",
+		"build": "node scripts/build-prod.js",
+		"watch:client": "esbuild ./src/client/main.ts --bundle --watch --outfile=./dist/public/main.js",
+		"watch:server": "node --loader ts-node/esm --watch src/server/main.tsx",
+		"watch:tailwind": "tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --watch",
 		"build:server": "tsc -p tsconfig.build.json",
 		"build:client": "esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/public/main.js",
-		"build:tailwind": "tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --minify",
-		"build": "yarn build:server && yarn build:client && yarn build:tailwind",
-		"start": "node dist/server/main.js"
+		"build:tailwind": "tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --minify"
 	},
 	"dependencies": {
 		"@fastify/compress": "^6.5.0",
@@ -20,6 +23,7 @@
 	"devDependencies": {
 		"@types/alpinejs": "^3.13.5",
 		"@types/node": "^20.10.5",
+		"concurrently": "^8.2.2",
 		"esbuild": "^0.19.10",
 		"tailwindcss": "^3.4.0",
 		"ts-node": "^10.9.2",
