@@ -2,9 +2,9 @@ import concurrently from "concurrently"
 
 concurrently(
   [
-    { command: 'yarn build:client', name: 'client', prefixColor: "green" },
-    { command: 'yarn build:server', name: 'server', prefixColor: "blue" },
-    { command: 'yarn build:tailwind', name: 'tailwind', prefixColor: "yellow" },
+    { command: 'node_modules/.bin/tsc -p tsconfig.build.json', name: 'client', prefixColor: "green" },
+    { command: 'node_modules/.bin/esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/public/main.js', name: 'server', prefixColor: "blue" },
+    { command: 'node_modules/.bin/tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --minify', name: 'tailwind', prefixColor: "yellow" },
   ],
   {
     prefix: 'name',
