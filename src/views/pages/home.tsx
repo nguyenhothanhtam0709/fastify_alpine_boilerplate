@@ -1,5 +1,5 @@
-import { Layout } from "./layout.js";
-import { Counter } from "./counter.js";
+import { Layout } from "../layouts/layout.js";
+import { Counter } from "../components/counter.js";
 
 export const Home = () => {
 	return (
