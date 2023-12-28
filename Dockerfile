@@ -43,7 +43,6 @@ USER node
 
 WORKDIR /app
 
-COPY package.json ./
 COPY --from=PruneStage /app/node_modules ./node_modules
 COPY --from=BuildStage /app/dist ./dist
 
