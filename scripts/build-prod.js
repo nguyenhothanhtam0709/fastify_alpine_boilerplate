@@ -26,7 +26,7 @@ async function execute() {
     , `
 {
   "type": "module",
-  "main" :"${kOutDir}/server/main.js"
+  "main" :"server/main.js"
 }
 `)
 }
