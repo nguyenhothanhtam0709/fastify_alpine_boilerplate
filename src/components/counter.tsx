@@ -1,4 +1,4 @@
-import { Component } from "nano-jsx";
+import { Component } from "nano-jsx/esm/component.js";
 
 export class Counter extends Component {
 	render() {

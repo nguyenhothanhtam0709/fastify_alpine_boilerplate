@@ -1,8 +1,7 @@
-import { Component, Fragment } from "nano-jsx";
 import Fastify from "fastify";
-import { renderSSR } from "nano-jsx";
-import { initSSR } from "nano-jsx/lib/ssr.js";
-import { Home } from "../components/home";
+import { renderSSR } from "nano-jsx/esm/index.js";
+import { initSSR } from "nano-jsx/esm/ssr.js";
+import { Home } from "../components/home.js";
 import { resolve } from "path";
 
 async function main() {
@@ -19,7 +18,7 @@ async function main() {
 		prefix: "/public/",
 	});
 
-	fastify.get("/", async function handler(request, reply) {
+	fastify.get("/", async function handler(_request, reply) {
 		return reply.type("text/html").send(renderSSR(() => <Home />));
 	});
 

@@ -1,12 +1,14 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
-		"module": "commonjs",
+		"module": "ES2022",
+		"moduleResolution": "Node",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
 		"jsx": "react-jsx",
-		"jsxImportSource": "nano-jsx/lib"
+		"jsxImportSource": "nano-jsx/esm",
+		"allowSyntheticDefaultImports": true
 	}
 }

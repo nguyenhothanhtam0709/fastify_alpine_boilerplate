@@ -1,4 +1,4 @@
-import { FC } from "nano-jsx";
+import type { FC } from "nano-jsx/esm";
 
 export const Layout: FC<{ children: any }> = (props) => {
 	return (

@@ -1,6 +1,7 @@
 {
 	"name": "fastify_alpine_boilerplate",
 	"license": "MIT",
+	"type": "module",
 	"scripts": {
 		"dev": "ts-node src/main.tsx",
 		"build:server": "tsc -p tsconfig.build.json",
