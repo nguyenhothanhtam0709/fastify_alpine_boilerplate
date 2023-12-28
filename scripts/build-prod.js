@@ -22,11 +22,11 @@ async function execute() {
   await result;
 
   await writeFile(
-    resolve(process.cwd(), "dist/package.json")
+    resolve(process.cwd(), `${kOutDir}/package.json`)
     , `
 {
   "type": "module",
-  "main" :"dist/server/main.js"
+  "main" :"${kOutDir}/server/main.js"
 }
 `)
 }
