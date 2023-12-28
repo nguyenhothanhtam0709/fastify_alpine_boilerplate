@@ -1,7 +1,7 @@
 import { Component } from "nano-jsx/esm/component.js";
 
-export class Counter extends Component {
-	render() {
+export default class Counter extends Component {
+	public render(): HTMLElement {
 		return (
 			<div
 				style={{

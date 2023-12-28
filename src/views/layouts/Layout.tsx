@@ -1,6 +1,6 @@
 import type { FC } from "nano-jsx/esm";
 
-export const Layout: FC<{ children: any }> = (props) => {
+const Layout: FC<{ children: any }> = (props) => {
 	return (
 		<html>
 			<head>
@@ -14,3 +14,4 @@ export const Layout: FC<{ children: any }> = (props) => {
 		</html>
 	);
 };
+export default Layout;

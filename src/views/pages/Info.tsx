@@ -1,6 +1,7 @@
-import { Layout } from "../layouts/layout.js";
+import { type FC } from "nano-jsx/esm";
+import Layout from "../layouts/Layout.js";
 
-export function Info() {
+const Info: FC = () => {
 	return (
 		<Layout>
 			<button
@@ -12,4 +13,5 @@ export function Info() {
 			</button>
 		</Layout>
 	);
-}
+};
+export default Info;

@@ -1,7 +1,8 @@
-import { Layout } from "../layouts/layout.js";
-import { Counter } from "../components/counter.js";
+import Layout from "../layouts/Layout.js";
+import Counter from "../components/Counter.js";
+import { type FC } from "nano-jsx/esm";
 
-export const Home = () => {
+const Home: FC = () => {
 	return (
 		<Layout>
 			<h1 class="text-3xl font-bold underline">Hello world!</h1>
@@ -17,3 +18,4 @@ export const Home = () => {
 		</Layout>
 	);
 };
+export default Home;

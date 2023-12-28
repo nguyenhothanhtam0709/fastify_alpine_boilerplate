@@ -1,10 +1,10 @@
 import Fastify from "fastify";
 import { renderSSR } from "nano-jsx/esm/index.js";
 import { initSSR } from "nano-jsx/esm/ssr.js";
-import { Home } from "../views/pages/home.js";
+import Home from "../views/pages/Home.js";
 import { resolve } from "path";
-import { Info } from "../views/pages/info.js";
-import { RandomInfo } from "../views/components/random-info.js";
+import Info from "../views/pages/Info.js";
+import RandomInfo from "../views/components/RandomInfo.js";
 
 async function initFastifyApp() {
 	const fastify = Fastify({

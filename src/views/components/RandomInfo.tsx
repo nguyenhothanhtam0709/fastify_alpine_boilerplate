@@ -1,4 +1,6 @@
-export const RandomInfo = () => {
+import type { FC } from "nano-jsx/esm";
+
+const RandomInfo: FC = () => {
 	return (
 		<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 			<svg
@@ -43,3 +45,4 @@ export const RandomInfo = () => {
 		</div>
 	);
 };
+export default RandomInfo;
