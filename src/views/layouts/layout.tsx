@@ -9,14 +9,7 @@ export const Layout: FC<{ children: any }> = (props) => {
 			</head>
 			<body>
 				<script type="module" src="/public/main.js"></script>
-				<header>
-					<nav style={{ padding: "8px" }}>
-						this is the navigation bar
-					</nav>
-				</header>
-				<main>
-					<section>{props.children}</section>
-				</main>
+				{props.children}
 			</body>
 		</html>
 	);
