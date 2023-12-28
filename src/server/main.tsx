@@ -44,7 +44,7 @@ async function main() {
 	mapViewRoutes(fastify);
 	mapApiRoutes(fastify);
 
-	await fastify.listen({ port: 3000 });
+	await fastify.listen({ port: 3000, host: "0.0.0.0" });
 }
 
 main();

@@ -1,0 +1,12 @@
+.vscode
+coverage
+dist
+node_modules
+test
+.env.example
+.eslintrc.js
+.gitignore
+.nvmrc
+.prettierrc
+jest.config.mjs
+REAMDE.md
