@@ -14,7 +14,7 @@ async function main() {
 	await fastify.register(import("@fastify/compress"));
 
 	await fastify.register(import("@fastify/static"), {
-		root: resolve(process.cwd(), "dist/server/public"),
+		root: resolve(process.cwd(), "dist/public"),
 		prefix: "/public/",
 	});
 

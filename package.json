@@ -5,8 +5,8 @@
 	"scripts": {
 		"dev": "ts-node src/main.tsx",
 		"build:server": "tsc -p tsconfig.build.json",
-		"build:client": "esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/server/public/main.js",
-		"build:tailwind": "tailwindcss -i ./src/client/main.css -o ./dist/server/public/main.css --minify",
+		"build:client": "esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/public/main.js",
+		"build:tailwind": "tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --minify",
 		"build": "yarn build:server && yarn build:client && yarn build:tailwind",
 		"start": "node dist/server/main.js"
 	},
