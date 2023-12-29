@@ -14,6 +14,12 @@ const Home: FC = () => {
 				>
 					<button>Go to info page</button>
 				</a>
+				<a
+					href="/chat"
+					class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+				>
+					<button>Go to chat page</button>
+				</a>
 			</div>
 		</Layout>
 	);

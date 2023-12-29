@@ -7,8 +7,9 @@ const kOutDir = "dist"
 async function execute() {
   const { result } = concurrently(
     [
-      { command: 'node_modules/.bin/tsc -p tsconfig.build.json', name: 'client', prefixColor: "green" },
-      { command: 'node_modules/.bin/esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/public/main.js', name: 'server', prefixColor: "blue" },
+      { command: 'node_modules/.bin/tsc -p tsconfig.build.json', name: 'server', prefixColor: "blue" },
+      { command: 'node_modules/.bin/esbuild ./src/client/main.ts --bundle --minify --outfile=./dist/public/main.js', name: 'client main.js', prefixColor: "green" },
+      { command: 'node_modules/.bin/esbuild ./src/client/chat.ts --bundle --minify --outfile=./dist/public/chat.js', name: 'client chat.js', prefixColor: "green" },
       { command: 'node_modules/.bin/tailwindcss -i ./src/client/main.css -o ./dist/public/main.css --minify', name: 'tailwind', prefixColor: "yellow" },
     ],
     {

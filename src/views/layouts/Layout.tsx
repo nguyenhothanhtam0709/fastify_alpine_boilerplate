@@ -1,6 +1,10 @@
 import type { FC } from "nano-jsx/esm";
 
-const Layout: FC<{ children: any }> = (props) => {
+type Props = {
+	children: any;
+	scripts?: string[];
+};
+const Layout: FC<Props> = ({ children, scripts = [] }: Props) => {
 	return (
 		<html>
 			<head>
@@ -9,7 +13,10 @@ const Layout: FC<{ children: any }> = (props) => {
 			</head>
 			<body>
 				<script type="module" src="/public/main.js"></script>
-				{props.children}
+				{scripts.map((script) => (
+					<script type="module" src={script}></script>
+				))}
+				{children}
 			</body>
 		</html>
 	);

@@ -6,6 +6,8 @@ import Info from "../views/pages/Info.js";
 import RandomInfo from "../views/components/RandomInfo.js";
 import { Server } from "hyper-express";
 import LiveDirectory from "live-directory";
+import { Server as SocketIOServer } from "socket.io";
+import Chat from "../views/pages/Chat.js";
 
 type initHttpServerParams = {
 	liveDirectory?: LiveDirectory;
@@ -43,6 +45,10 @@ function mapViewRoutes(server: Awaited<ReturnType<typeof initHttpServer>>) {
 	server.get("/info", async (_request, response) => {
 		return response.type("text/html").send(renderSSR(() => <Info />));
 	});
+
+	server.get("/chat", async (_request, response) => {
+		return response.type("text/html").send(renderSSR(() => <Chat />));
+	});
 }
 
 function mapApiRoutes(server: Awaited<ReturnType<typeof initHttpServer>>) {
@@ -51,9 +57,29 @@ function mapApiRoutes(server: Awaited<ReturnType<typeof initHttpServer>>) {
 	});
 }
 
-function configureSocketIO(
-	server: Awaited<ReturnType<typeof initHttpServer>>
-) {}
+function configureSocketIO(server: Awaited<ReturnType<typeof initHttpServer>>) {
+	const io = new SocketIOServer({
+		transports: ["websocket"],
+		serveClient: false,
+		cors: {
+			origin: "*",
+			methods: ["GET", "POST"],
+		},
+	});
+	io.attachApp(server.uws_instance);
+
+	io.on("connection", (socket) => {
+		console.log("user connected ", socket.id);
+
+		socket.on("chat message", (msg) => {
+			io.emit("chat message", msg);
+		});
+
+		socket.on("disconnect", () => {
+			console.log(`user ${socket.id} disconnected`);
+		});
+	});
+}
 
 async function main() {
 	initSSR();
