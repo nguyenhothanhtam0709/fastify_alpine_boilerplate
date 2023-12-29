@@ -1,7 +1,7 @@
 import { renderSSR } from "nano-jsx/esm/index.js";
 import { initSSR } from "nano-jsx/esm/ssr.js";
 import Home from "../views/pages/Home.js";
-import { join, resolve } from "path";
+import { resolve } from "path";
 import Info from "../views/pages/Info.js";
 import RandomInfo from "../views/components/RandomInfo.js";
 import { Server } from "hyper-express";
@@ -35,21 +35,25 @@ async function initHttpServer(params: initHttpServerParams = {}) {
 	return server;
 }
 
-function mapViewRoutes(fastify: Awaited<ReturnType<typeof initHttpServer>>) {
-	fastify.get("/", async function handler(_request, response) {
+function mapViewRoutes(server: Awaited<ReturnType<typeof initHttpServer>>) {
+	server.get("/", async function handler(_request, response) {
 		return response.type("text/html").send(renderSSR(() => <Home />));
 	});
 
-	fastify.get("/info", async (_request, response) => {
+	server.get("/info", async (_request, response) => {
 		return response.type("text/html").send(renderSSR(() => <Info />));
 	});
 }
 
-function mapApiRoutes(fastify: Awaited<ReturnType<typeof initHttpServer>>) {
-	fastify.get("/api/random-info", async (_request, response) => {
+function mapApiRoutes(server: Awaited<ReturnType<typeof initHttpServer>>) {
+	server.get("/api/random-info", async (_request, response) => {
 		return response.send(renderSSR(() => <RandomInfo />));
 	});
 }
+
+function configureSocketIO(
+	server: Awaited<ReturnType<typeof initHttpServer>>
+) {}
 
 async function main() {
 	initSSR();
@@ -73,6 +77,7 @@ async function main() {
 	const server = await initHttpServer({ liveDirectory });
 	mapViewRoutes(server);
 	mapApiRoutes(server);
+	configureSocketIO(server);
 
 	const PORT = 3000;
 	await server.listen(PORT);

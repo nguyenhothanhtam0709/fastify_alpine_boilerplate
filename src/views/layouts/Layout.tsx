@@ -4,7 +4,7 @@ const Layout: FC<{ children: any }> = (props) => {
 	return (
 		<html>
 			<head>
-				<title>Fastify alpinejs</title>
+				<title>Nodejs alpinejs</title>
 				<link rel="stylesheet" href="/public/main.css" />
 			</head>
 			<body>
