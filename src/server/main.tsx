@@ -16,7 +16,7 @@ async function initHttpServer(params: initHttpServerParams = {}) {
 	if (params.liveDirectory) {
 		const liveDirectory = params.liveDirectory;
 		server.get("/public/*", (request, response) => {
-			const path = resolve(process.cwd(), join("dist", request.path));
+			const path = request.path.replace("/public", "");
 			const file = liveDirectory.get(path);
 			if (!file) {
 				return response.status(404).send();
@@ -54,18 +54,21 @@ function mapApiRoutes(fastify: Awaited<ReturnType<typeof initHttpServer>>) {
 async function main() {
 	initSSR();
 
-	const liveDirectory = new LiveDirectory("", {
-		filter: {
-			keep: {
-				extensions: ["css", "js"],
+	const liveDirectory = new LiveDirectory(
+		resolve(process.cwd(), "dist/public"),
+		{
+			filter: {
+				keep: {
+					extensions: ["css", "js"],
+				},
+				ignore: (path) => path.startsWith("."),
 			},
-			ignore: (path) => path.startsWith("."),
-		},
-		cache: {
-			max_file_count: 250,
-			max_file_size: 1024 * 1024,
-		},
-	});
+			cache: {
+				max_file_count: 250,
+				max_file_size: 1024 * 1024,
+			},
+		}
+	);
 
 	const server = await initHttpServer({ liveDirectory });
 	mapViewRoutes(server);
