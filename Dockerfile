@@ -25,6 +25,7 @@ FROM base_image AS PruneStage
 
 RUN apk add curl
 RUN curl -sSf https://gobinaries.com/tj/node-prune | sh
+RUN apk add --no-cache gcc g++ make python3 gcompat
 
 WORKDIR /app
 
@@ -38,6 +39,8 @@ RUN node-prune
 ## Run app
 #####
 FROM base_image AS RunningState
+
+RUN apk add --no-cache gcompat
 
 USER node
 

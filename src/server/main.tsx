@@ -1,50 +1,79 @@
-import Fastify from "fastify";
 import { renderSSR } from "nano-jsx/esm/index.js";
 import { initSSR } from "nano-jsx/esm/ssr.js";
 import Home from "../views/pages/Home.js";
-import { resolve } from "path";
+import { join, resolve } from "path";
 import Info from "../views/pages/Info.js";
 import RandomInfo from "../views/components/RandomInfo.js";
+import { Server } from "hyper-express";
+import LiveDirectory from "live-directory";
 
-async function initFastifyApp() {
-	const fastify = Fastify({
-		logger: true,
-	});
+type initHttpServerParams = {
+	liveDirectory?: LiveDirectory;
+};
+async function initHttpServer(params: initHttpServerParams = {}) {
+	const server = new Server();
 
-	await fastify.register(import("@fastify/compress"));
+	if (params.liveDirectory) {
+		const liveDirectory = params.liveDirectory;
+		server.get("/public/*", (request, response) => {
+			const path = resolve(process.cwd(), join("dist", request.path));
+			const file = liveDirectory.get(path);
+			if (!file) {
+				return response.status(404).send();
+			}
 
-	await fastify.register(import("@fastify/static"), {
-		root: resolve(process.cwd(), "dist/public"),
-		prefix: "/public/",
-	});
+			const content = file.content;
+			const ext = path.split(".").pop()!;
+			if (content instanceof Buffer) {
+				return response.type(ext).send(content);
+			} else {
+				return response.type(ext).stream(content);
+			}
+		});
+	}
 
-	return fastify;
+	return server;
 }
 
-function mapViewRoutes(fastify: Awaited<ReturnType<typeof initFastifyApp>>) {
-	fastify.get("/", async function handler(_request, reply) {
-		return reply.type("text/html").send(renderSSR(() => <Home />));
+function mapViewRoutes(fastify: Awaited<ReturnType<typeof initHttpServer>>) {
+	fastify.get("/", async function handler(_request, response) {
+		return response.type("text/html").send(renderSSR(() => <Home />));
 	});
 
-	fastify.get("/info", async (_request, reply) => {
-		return reply.type("text/html").send(renderSSR(() => <Info />));
+	fastify.get("/info", async (_request, response) => {
+		return response.type("text/html").send(renderSSR(() => <Info />));
 	});
 }
 
-function mapApiRoutes(fastify: Awaited<ReturnType<typeof initFastifyApp>>) {
-	fastify.get("/api/random-info", async (_request, reply) => {
-		return reply.send(renderSSR(() => <RandomInfo />));
+function mapApiRoutes(fastify: Awaited<ReturnType<typeof initHttpServer>>) {
+	fastify.get("/api/random-info", async (_request, response) => {
+		return response.send(renderSSR(() => <RandomInfo />));
 	});
 }
 
 async function main() {
 	initSSR();
 
-	const fastify = await initFastifyApp();
-	mapViewRoutes(fastify);
-	mapApiRoutes(fastify);
+	const liveDirectory = new LiveDirectory("", {
+		filter: {
+			keep: {
+				extensions: ["css", "js"],
+			},
+			ignore: (path) => path.startsWith("."),
+		},
+		cache: {
+			max_file_count: 250,
+			max_file_size: 1024 * 1024,
+		},
+	});
 
-	await fastify.listen({ port: 3000, host: "0.0.0.0" });
+	const server = await initHttpServer({ liveDirectory });
+	mapViewRoutes(server);
+	mapApiRoutes(server);
+
+	const PORT = 3000;
+	await server.listen(PORT);
+	console.log(`Server is listening on port ${PORT}`);
 }
 
 main();
